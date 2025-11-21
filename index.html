@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Madhu • Digital Profile</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:Inter,system-ui;
+      background:#000;
+      color:#fff;
+      transition:0.4s ease;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    body.light{
+      background:#ffffff !important;
+      color:#000 !important;
+    }
+
+    /* ========== Background Video ========== */
+    #bg-video{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.35);
+      z-index:-4;
+      transition:0.4s ease;
+    }
+    body.light #bg-video{filter:brightness(.8);}
+
+    /* ========== Particles ========== */
+    #particles-js{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      opacity:0.8;
+    }
+    body.light #particles-js{
+      opacity:0.15 !important;
+    }
+
+    /* ========== Header ========== */
+    header{
+      width:100%;
+      padding:15px 20px;
+      position:fixed;
+      top:0;
+      right:0;
+      display:flex;
+      justify-content:flex-end;
+      z-index:20;
+    }
+
+    .theme-toggle{
+      width:42px;height:42px;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:50%;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.3);
+      cursor:pointer;
+      transition:.3s;
+      overflow:hidden;
+      font-size:18px;
+    }
+    body.light .theme-toggle{
+      background:#0003;
+      border:1px solid #0004;
+      color:#000;
+    }
+    .theme-toggle:hover{transform:scale(1.1);}
+
+    /* ========== Wrapper ========== */
+    .wrapper{
+      width:100%;
+      padding-top:120px;
+      padding-bottom:160px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+
+    /* Floating Icons */
+    .float{
+      position:absolute;
+      font-size:35px;
+      opacity:.25;
+      animation:float 6s infinite alternate ease-in-out;
+      z-index:1;
+    }
+    @keyframes float{
+      0%{transform:translateY(0) rotate(0);}
+      100%{transform:translateY(-25px) rotate(15deg);}
+    }
+    .float:nth-child(1){top:150px;left:25px;}
+    .float:nth-child(2){top:280px;right:35px;}
+    .float:nth-child(3){bottom:200px;left:45%;}
+
+    /* ========== Profile Card ========== */
+    .card-box{
+      width:100%;
+      max-width:430px;
+      padding:28px 26px;
+      background:rgba(255,255,255,.09);
+      border-radius:22px;
+      backdrop-filter:blur(12px);
+      text-align:center;
+      box-shadow:0 0 35px rgba(0,0,0,.5);
+      position:relative;
+      overflow:hidden;
+      transition:.4s ease;
+    }
+
+    body.light .card-box{
+      background:rgba(0,0,0,0.06);
+      color:#000!important;
+    }
+
+    /* Neon Border */
+    .card-box::before{
+      content:"";
+      position:absolute;inset:-2px;
+      border-radius:24px;padding:2px;
+      background:linear-gradient(135deg,#6570ff,#3b3fea,#6e55ff);
+      background-size:300% 300%;
+      animation:borderMove 5s infinite;
+      z-index:-1;
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+              mask-composite:exclude;
+    }
+    @keyframes borderMove{
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    /* Avatar */
+    .avatar{
+      width:115px;height:115px;
+      border-radius:50%;
+      overflow:hidden;
+      margin:auto;
+      border:3px solid rgba(255,255,255,.5);
+      box-shadow:0 0 22px rgba(101,112,255,.55);
+      transition:.3s ease;
+    }
+    body.light .avatar{
+      border-color:#0004;
+      box-shadow:0 0 20px rgba(0,0,0,.3);
+    }
+
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .name{
+      font-size:24px;font-weight:700;margin-top:15px;
+    }
+
+    #datetime{
+      margin:10px 0 16px;
+      font-size:15px;
+      opacity:.9;
+    }
+
+    /* Ripple */
+    .ripple-active::after{
+      content:"";
+      position:absolute;
+      width:120px;height:120px;
+      border-radius:50%;
+      background:rgba(255,255,255,.45);
+      transform:scale(0);
+      animation:ripple .5s linear;
+      left:var(--x);top:var(--y);
+    }
+    @keyframes ripple{to{transform:scale(3);opacity:0;}}
+
+    /* Buttons */
+    .call-btn{
+      background:#27c400;
+      padding:14px;
+      border-radius:16px;
+      font-size:17px;
+      font-weight:600;
+      display:block;
+      margin-bottom:12px;
+      color:#fff;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
+      transition:.25s;
+    }
+    .call-btn:hover{transform:scale(1.05);}
+    body.light .call-btn{
+      background:#178a00;
+    }
+
+    .link-btn{
+      padding:14px;
+      background:rgba(255,255,255,.1);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.15);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#fff;
+      margin-bottom:10px;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
+      transition:.25s;
+    }
+    .link-btn:hover{transform:translateY(-3px);}
+    .link-btn img{width:22px;filter:invert(1);}
+    body.light .link-btn{
+      background:rgba(0,0,0,.05);color:#000;border-color:#0003;
+    }
+    body.light .link-btn img{filter:invert(0);}
+
+    /* About Button */
+    .about-btn{
+      margin-top:10px;
+      padding:12px 16px;
+      border-radius:16px;
+      background:#3b3fea;
+      border:none;
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      transition:.25s;
+    }
+    .about-btn:hover{transform:scale(1.05);}
+    body.light .about-btn{background:#2f35cc;}
+
+ /* ========== FULL-WIDTH INLINE ABOUT SECTION ========== */
+#aboutSection{
+  width:100%;
+  margin-top:40px;
+  display:none;
+  padding:30px 20px;
+}
+
+.about-box{
+  width:100%;
+  padding:25px 20px;
+  background:rgba(255,255,255,.15);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(12px);
+  font-size:17px;
+  line-height:1.7;
+  color:#fff;
+  text-align:left;    /* INLINE FEEL */
+}
+
+body.light .about-box{
+  background:rgba(0,0,0,.06);
+  border-color:#0003;
+  color:#000;
+}
+
+    /* Footer (NOT FIXED NOW) */
+    footer{
+      width:100%;
+      text-align:center;
+      padding:20px;
+      margin-top:40px;
+      background:rgba(255,255,255,.09);
+      backdrop-filter:blur(10px);
+      border-top:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      font-size:14px;
+    }
+    body.light footer{
+      background:#0001;
+      color:#000;
+      border-color:#0003;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="theme-toggle" onclick="toggleTheme(event)">🌓</div>
+  </header>
+
+  <!-- Background -->
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="your-video.mp4" type="video/mp4">
+  </video>
+
+  <div id="particles-js"></div>
+
+  <div class="wrapper">
+
+    <!-- Floating Icons -->
+    <div class="float">⚡</div>
+    <div class="float">✨</div>
+    <div class="float">⭐</div>
+
+    <!-- Profile Card -->
+    <div class="card-box">
+
+      <div class="avatar"><img src="src/2.jpg"></div>
+
+      <div class="name">Madhu Dakkata</div>
+
+      <p id="datetime"></p>
+
+      <a href="tel:+919550937716" class="call-btn" onclick="ripple(event)">📞 Tap to Call</a>
+
+      <a class="link-btn" onclick="ripple(event)" href="https://wa.me/919550937716">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg"> WhatsApp
+      </a>
+
+      <a class="link-btn" onclick="ripple(event)" href="https://www.instagram.com/madhureddy___13/">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg"> Instagram
+      </a>
+
+      <a class="link-btn" onclick="ripple(event)" href="https://www.facebook.com/dakktha.madhu">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg"> Facebook
+      </a>
+
+      <a class="link-btn" onclick="ripple(event)" href="https://github.com/madhureddy7716">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg"> GitHub
+      </a>
+
+      <a class="link-btn" href="https://t.me/madhudakkata" target="_blank" onclick="ripple(event)">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg">
+  Telegram
+</a>
+
+
+      <a class="link-btn" onclick="ripple(event)" href="https://madhureddy7716.github.io/portfolio/">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/internetexplorer.svg"> Portfolio
+      </a>
+
+      <button class="about-btn" onclick="toggleAbout()">About Me</button>
+    </div>
+
+  </div>
+
+  <!-- About Section -->
+  <div id="aboutSection">
+    <div class="about-box">
+     I’m a full-stack developer who builds fast, functional, and clean web applications using Python, Flask, Django, JavaScript, and modern UI frameworks. I focus on execution—shipping features, fixing bottlenecks, and keeping code maintainable.
+I’ve delivered end-to-end modules during internships, working with REST APIs, MySQL/MongoDB, React.js, and scalable backend logic.
+I’m comfortable debugging, optimizing queries, integrating front-end components, and pushing updates with quick turnaround.
+My project work spans fraud-detection systems, real-time dashboards, travel-tech platforms, and full-stack e-commerce tools.
+I’ve worked with ML libraries, built reproducible pipelines, and deployed Streamlit-based analytics dashboards when needed.
+I collaborate well in fast-moving teams—GitHub workflows, code reviews, and clean documentation are standard practice for me.
+I approach development with clarity: simple architecture, readable functions, and features that solve actual problems.
+When I take ownership of a task, I deliver it without excuses, whether it’s backend logic, UI refinement, or data processing.
+I’m currently focused on building sharper full-stack applications and improving my ability to ship production-ready features rapidly.
+If a project demands speed, structure, and reliability, I’m the kind of engineer who gets it done.
+  </div>
+
+  <footer>
+    📞 9550937716 • © 2025 Madhu Dakkata • ✉️ madhudakkata4021@gmail.com
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    function updateDateTime(){
+      document.getElementById("datetime").textContent =
+        new Date().toLocaleString("en-IN",{
+          weekday:"short",year:"numeric",month:"short",day:"numeric",
+          hour:"2-digit",minute:"2-digit",second:"2-digit"
+        });
+    }
+    setInterval(updateDateTime,1000);
+    updateDateTime();
+
+    function toggleTheme(e){
+      ripple(e);
+      document.body.classList.toggle("light");
+    }
+
+    function ripple(e){
+      let rect = e.target.getBoundingClientRect();
+      e.target.style.setProperty("--x", e.clientX - rect.left + "px");
+      e.target.style.setProperty("--y", e.clientY - rect.top + "px");
+      e.target.classList.remove("ripple-active");
+      void e.target.offsetWidth;
+      e.target.classList.add("ripple-active");
+    }
+
+    function toggleAbout(){
+      let sec = document.getElementById("aboutSection");
+      sec.style.display = sec.style.display === "block" ? "none" : "block";
+    }
+
+    particlesJS("particles-js",{
+      particles:{ number:{ value:70 }, size:{ value:3 },
+      move:{ speed:1 }, line_linked:{ enable:false },
+      opacity:{ value:0.3 } }
+    });
+  </script>
+
+</body>
+</html>
